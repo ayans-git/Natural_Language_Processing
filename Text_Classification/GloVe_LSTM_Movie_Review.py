@@ -5,8 +5,8 @@ import tensorflow as tf
 import numpy as np
 
 train_review_dir = './Datasets/aclImdb/train'
-embedding_dims = 200  #This needs to be equal to the gloVe dimension. Here 200 as I am using glove.6B.200d
-maxwords = 20000   # Consider top 15,000 words #Note the change
+embedding_dims = 200
+maxwords = 15000
 glove_file_loc = './Datasets'
 maxlen = 200
 lstm_neurons = 50
@@ -22,10 +22,10 @@ def preprocess_reviews(review_dir):
             if review_file[-4 :] == '.txt':
                 _file = open(os.path.join(review_folder, review_file), encoding = "utf8")
             if review_type == 'neg':
-                reviews_collection.append((0, _file.read())) #Labels are string. CHANGED
+                reviews_collection.append((0, _file.read())) 
                 _file.close()
             else:
-                reviews_collection.append((1, _file.read())) #Labels are string. CHANGED
+                reviews_collection.append((1, _file.read())) 
                 _file.close()
     shuffle(reviews_collection)
     return reviews_collection
@@ -96,11 +96,11 @@ def get_glove_embedding_matrix(indexes_of_words, maxwords, embedding_dims):
  reviews_and_labels = preprocess_reviews(train_review_dir)
 reviews_text, reviews_labels = get_reviews_and_labels(reviews_and_labels)
 padded_review_sequences, tokenizer = get_sequences_and_tokenizer(reviews_text)
-data_split_point = int(len(padded_review_sequences) * 0.8) # 80 : 20 split
-x_train = padded_review_sequences[:data_split_point] #First 80% training texts
-y_train = reviews_labels[:data_split_point] #First 80% training labels
-x_test = padded_review_sequences[data_split_point:] #Remaining 20% validation texts
-y_test = reviews_labels[data_split_point:] #Remaining 20% validation labels
+data_split_point = int(len(padded_review_sequences) * 0.8) 
+x_train = padded_review_sequences[:data_split_point] 
+y_train = reviews_labels[:data_split_point] 
+x_test = padded_review_sequences[data_split_point:] 
+y_test = reviews_labels[data_split_point:] 
 indexes_of_words = tokenizer.word_index
 glove_embedding_matrix = get_glove_embedding_matrix(indexes_of_words, maxwords, embedding_dims)
 
